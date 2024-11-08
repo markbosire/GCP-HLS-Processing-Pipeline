@@ -18,7 +18,8 @@ This project implements a video processing pipeline using Google Cloud services.
 - Google Cloud Platform account
 - Gcloud CLI authenticated
 - Terraform for infrastructure provisioning
-
+- All the required APIs have been enabled. Check the guide here: [API guide](./docs/apiguide.md)
+  
 ## Architecture Overview
 
 [![Terraform](https://img.shields.io/badge/terraform-%235835CC.svg?style=for-the-badge&logo=terraform&logoColor=white)](https://www.terraform.io/)
