@@ -37,7 +37,7 @@ The architecture of the video processing pipeline is as follows:
 6. **Processed Video Storage**: The processed video is sent to Cloud Storage.
 7. **Web App Receives Video**: The web app receives the processed video.
 
-The user uploads the video to cloud storage. An Object finalized event is triggered. A Cloud function is initialized to process the Video. A publisher event is invoked when the image is processed. The web app receives a subsiber notification. The processed Video is sent to clous storage. The web app receives the processed video.
+The user uploads the video to cloud storage. An Object finalized event is triggered. A Cloud function is initialized to process the Video. A publisher event is invoked when the image is processed. The web app receives a subscriber notification. The processed Video is sent to clous storage. The web app receives the processed video.
 
 ## Setup
 
@@ -46,10 +46,8 @@ The user uploads the video to cloud storage. An Object finalized event is trigge
 Before you can begin, you'll need to clone the repository containing the video processing pipeline code. Run the following command in your terminal:
 
 ```
-git clone https://github.com/your-repo.git
+git clone https://github.com/markbosire/GCP-HLS-Processing-Pipeline.git
 ```
-
-Replace `https://github.com/your-repo.git` with the actual URL of your repository.
 
 ### Create Google Cloud Storage Bucket
 
