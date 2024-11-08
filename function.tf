@@ -49,6 +49,9 @@ resource "google_cloudfunctions2_function" "function" {
     google_storage_bucket_object.zip,
     google_service_account.function_sa,
     google_project_iam_member.sa_roles,
-    google_storage_bucket_iam_member.bucket_roles
+    google_storage_bucket_iam_member.bucket_viewer_roles,
+    google_storage_bucket_iam_member.public_viewer_role,
+    google_storage_bucket_iam_member.bucket_user_role
+
   ]
 }
