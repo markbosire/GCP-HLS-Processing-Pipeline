@@ -10,6 +10,7 @@
     - [Clone the Repository](#clone-the-repository)
     - [Create Google Cloud Storage Bucket](#create-google-cloud-storage-bucket)
     - [Configure Terraform to Use the Bucket](#configure-terraform-to-use-the-bucket)
+  - [Known issues](#known-issues)
 
 ## Description
 This project implements a video processing pipeline using Google Cloud services.
@@ -103,9 +104,22 @@ terraform fmt
 terraform validate
 terraform apply -auto-approve
 ```
+If you face a problem with the EventArc API during the deployment, please check out the [known issues section](#known-issues).
 
 3. Deploy the Cloud Function to the provisioned infrastructure.
 
 For the web apps setup, please refer to:
 
 - [Web App Setup](./docs/webappsetup.md)
+
+## Known issues
+
+You might face errors related to Eventarc, for example:
+
+```
+Error: Error creating function: googleapi: Error 400: Validation failed for trigger projects/obj-localization/locations/us-central1/triggers/object-localization-109804: Invalid resource state for "": Permission denied while using the Eventarc Service Agent. If you recently started to use Eventarc, it may take a few minutes before all necessary permissions are propagated to the Service Agent. Otherwise, verify that it has Eventarc Service Agent role.
+
+If you recently started to use Eventarc, it may take a few minutes before all necessary permissions are propagated to the Service Agent. Otherwise, verify that it has Eventarc Service Agent role.
+```
+
+It happens because the Eventarc permissions take some time to propagate. Wait some minutes and do the terraform apply command again. Please see the [Known issues for Eventarc](https://cloud.google.com/eventarc/docs/issues).

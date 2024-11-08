@@ -6,18 +6,18 @@
 
 export GOOGLE_CLOUD_PROJECT_ID="your-project-id"
 export GOOGLE_CLOUD_STORAGE_BUCKET="your-bucket-name"
-export GOOGLE_CLOUD_CLIENT_EMAIL="your-service-account-email"
-export GOOGLE_CLOUD_PRIVATE_KEY="your-service-account-private-key"
+export SERVICE_ACCOUNT_NAME="your-prefered-service-account-email-for-the-webapp"
+
 ```
 
 Replace the following placeholders with your actual values:
 
 - `your-project-id`
 - `your-bucket-name`
-- `your-service-account-email`
-- `your-service-account-private-key` (the private key from the service account JSON file)
+- `your-prefered-service-account-email-for-the-webapp`
 
-2. Run the `setup.sh` script to create the `.env` file and grant the necessary IAM permissions:
+
+1. Run the `setup.sh` script to create the `.env` file and grant the necessary IAM permissions:
 
 ```
 bash setup.sh

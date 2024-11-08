@@ -7,6 +7,7 @@ gcloud services enable iam.googleapis.com
 gcloud services enable eventarc.googleapis.com
 gcloud services enable pubsub.googleapis.com
 gcloud services enable run.googleapis.com
+gcloud services enable cloudbuild.googleapis.com
 ```
 
 These commands will enable the necessary APIs for the Google Cloud resources used in the provided Terraform configuration.

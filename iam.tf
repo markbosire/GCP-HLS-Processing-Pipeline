@@ -1,4 +1,6 @@
 # iam.tf - Service Account and IAM roles
+data "google_storage_project_service_account" "gcs_account" {
+}
 resource "google_service_account" "function_sa" {
   account_id   = "cloud-function-sa"
   display_name = "Cloud Function Service Account"
@@ -31,7 +33,12 @@ resource "google_storage_bucket_iam_member" "bucket_viewer_roles" {
   role   = "roles/storage.objectViewer"
   member = "serviceAccount:${google_service_account.function_sa.email}"
 }
-
+# Add pubsub.publisher role to the default storage service account
+resource "google_project_iam_member" "storage_sa_roles" {
+  project = var.project_id
+  role    = "roles/pubsub.publisher"
+  member  = "serviceAccount:${data.google_storage_project_service_account.gcs_account.email_address}"
+}
 # Storage bucket IAM bindings for object user (only for input bucket)
 resource "google_storage_bucket_iam_member" "bucket_user_role" {
   for_each = {

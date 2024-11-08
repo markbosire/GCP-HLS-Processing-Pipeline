@@ -68,10 +68,10 @@ app.post('/upload', upload.single('video'), async (req, res) => {
       const messageData = JSON.parse(Buffer.from(message.data, 'base64').toString());
       console.log(`Received message: Video ID ${messageData.videoId} processed at ${messageData.timestamp}`);
       
-      if (messageData.status=== "processed") {
+      if (messageData.status === "processed") {
         
         processingComplete = true;
-      }
+      } 
       // Acknowledge the message so it's not reprocessed
       message.ack();
     };

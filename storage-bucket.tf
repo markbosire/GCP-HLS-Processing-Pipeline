@@ -13,3 +13,8 @@ resource "google_storage_bucket" "input_bucket" {
   force_destroy               = true
   uniform_bucket_level_access = true
 }
+output "input_bucket_name" {
+  value       = google_storage_bucket.input_bucket.name
+  description = "The name of the input storage bucket"
+}
+
