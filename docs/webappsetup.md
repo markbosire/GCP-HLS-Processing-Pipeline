@@ -6,7 +6,7 @@
 
 export GOOGLE_CLOUD_PROJECT_ID="your-project-id"
 export GOOGLE_CLOUD_STORAGE_BUCKET="your-bucket-name"
-export SERVICE_ACCOUNT_NAME="your-prefered-service-account-email-for-the-webapp"
+export SERVICE_ACCOUNT_NAME="your-prefered-service-account-name-for-the-webapp-sa"
 
 ```
 
