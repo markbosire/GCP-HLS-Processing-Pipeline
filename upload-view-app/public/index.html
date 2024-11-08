@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video Uploader</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css">
+
+  
+</head>
+<body class="bg-gray-100">
+  <div class="max-w-md mx-auto p-8 bg-white rounded-lg shadow-lg">
+    <h1 class="text-xl font-bold mb-4 text-center">Upload a Video</h1>
+    
+    <form id="uploadForm" enctype="multipart/form-data" class="space-y-4">
+      <label for="video" class="block text-sm font-semibold text-gray-700">Select a video file:</label>
+      <input type="file" id="video" name="video" accept="video/*" required class="w-full p-2 border border-gray-300 rounded">
+      <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition">Upload</button>
+    </form>
+
+    <!-- Progress bar container -->
+    <div class="mt-6" id="progressContainer" style="display: none;">
+      <div class="text-sm font-semibold text-gray-700">Video Upload and Processing in Progress</div>
+      <div class="flex justify-center items-center mt-4">
+        <div
+          class="inline-block h-10 w-10 animate-spin rounded-full border-4 border-blue-500 border-solid border-t-transparent"
+          role="status"
+        >
+          <span
+            class="absolute -m-px h-px w-px overflow-hidden whitespace-nowrap border-0 p-0 [clip:rect(0,0,0,0)]"
+            >Loading...</span>
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- Message container -->
+    <div id="message" class="mt-4 text-center text-lg"></div>
+  </div>
+
+  <div class="max-w-3xl mx-auto p-5">
+    <select id="sourceSelect" class="w-full p-2 mb-5 text-lg bg-white border border-gray-300 rounded-md">
+        <option value="">Select a video...</option>
+    </select>
+    <div class="w-full aspect-w-16 aspect-h-9">
+        <video id="player" class="w-full h-full" controls></video>
+    </div>
+</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
+
+  <script>
+    const form = document.getElementById('uploadForm');
+    const messageDiv = document.getElementById('message');
+    const progressContainer = document.getElementById('progressContainer');
+ 
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+
+      // Show progress bar
+      progressContainer.style.display = 'block';
+  
+
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', '/upload', true);
+      
+      // Track progress
+      xhr.onload = async () => {
+        if (xhr.status === 200) {
+         console.log("Success")
+          const result = JSON.parse(xhr.responseText);
+          messageDiv.innerHTML = `<p>${result.message} the page will reload in 10 seconds.</p>`;
+
+          setTimeout(() => {
+            window.location.reload();
+          }, 10000);
+
+        } else {
+          messageDiv.textContent = 'Upload failed.';
+        }
+        progressContainer.style.display = 'none';
+      };
+
+      xhr.onerror = () => {
+        messageDiv.textContent = 'An error occurred during the upload.';
+        progressContainer.style.display = 'none';
+      };
+
+      xhr.send(formData);
+    });
+    document.addEventListener('DOMContentLoaded', async () => {
+            const video = document.getElementById('player');
+            const sourceSelect = document.getElementById('sourceSelect');
+            let currentPlayer = null;
+            let currentHls = null;
+
+            // Hardcoded videos list - you can add more videos here
+               // Fetch video list from server
+               const response = await fetch('/videos');
+            const videoRaw = await response.json();
+            const videos= videoRaw.map(video => {
+              const name = video;
+              const path = `https://storage.googleapis.com/hlsformatting/hls/${name}/${name}.m3u8`;
+              return { name, path };
+            })
+          
+            
+            const defaultOptions = {
+                controls: [
+                    'play-large',
+                    'restart',
+                    'rewind',
+                    'play',
+                    'fast-forward',
+                    'progress',
+                    'current-time',
+                    'duration',
+                    'mute',
+                    'volume',
+                    'captions',
+                    'settings',
+                    'pip',
+                    'fullscreen'
+                ],
+                quality: {
+                    default: 1080,  // Set default quality to 'auto'
+                    options: [360, 480, 720, 1080],  // Include 'auto' as an option
+                    forced: true,
+                    onChange: (quality) => updateQuality(quality)
+                }
+            };
+
+            // Populate the select dropdown with videos
+            videos.forEach(video => {
+                const option = document.createElement('option');
+                option.value = video.path;
+                option.textContent = video.name;
+                sourceSelect.appendChild(option);
+            });
+
+            function loadVideo(source) {
+                if (!source) return;
+                console.log("Loading video: ", source); 
+                // Destroy previous instances if they exist
+              
+
+                if (Hls.isSupported()) {
+                    const hls = new Hls();
+                    currentHls = hls;
+                    hls.loadSource(source);
+                    hls.attachMedia(video);
+
+                    hls.on(Hls.Events.MANIFEST_PARSED, function(event, data) {
+                        const availableQualities = hls.levels.map((level) => level.height);
+                        defaultOptions.quality.options = availableQualities;
+                        defaultOptions.quality.default = availableQualities[availableQualities.length - 1];
+
+                        currentPlayer = new Plyr(video, defaultOptions);
+                    });
+
+                    window.hls = hls;
+                } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                    video.src = source;
+                    currentPlayer = new Plyr(video, defaultOptions);
+                }
+            }
+
+            function updateQuality(newQuality) {
+                if (window.hls) {
+                    window.hls.levels.forEach((level, levelIndex) => {
+                        if (level.height === newQuality) {
+                            window.hls.currentLevel = levelIndex;
+                        }
+                    });
+                }
+            }
+
+            // Handle source selection changes
+            sourceSelect.addEventListener('change', (e) => {
+    const selectedPath = e.target.value;
+    console.log("Selected video: ", selectedPath);  // Debugging line
+    loadVideo(selectedPath);
+});
+
+            // Load the first video automatically if available
+            if (videos.length > 0) {
+                sourceSelect.value = videos[0].path;
+                loadVideo(videos[0].path);
+            }
+        });          
+      
+  </script>
+</body>
+</html>
