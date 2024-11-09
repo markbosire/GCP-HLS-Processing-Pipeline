@@ -1,6 +1,6 @@
 ## Requirements
 
-1. Node 
+- [Node](https://nodejs.org/en) 
 
 ## Setup
 
