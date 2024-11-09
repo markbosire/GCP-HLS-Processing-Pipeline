@@ -1,3 +1,8 @@
+## Requirements
+
+1. Node 
+
+## Setup
 
 1. Change the directory into the `upload-view-app` directory Update the environment variables in the `setup.sh` script:
 
