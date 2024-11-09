@@ -25,8 +25,7 @@ This project implements a video processing pipeline using Google Cloud services.
 
 [![Terraform](https://img.shields.io/badge/terraform-%235835CC.svg?style=for-the-badge&logo=terraform&logoColor=white)](https://www.terraform.io/)
 [![GCP](https://img.shields.io/badge/Google_Cloud-4285F4.svg?style=for-the-badge&logo=google-cloud&logoColor=white)](https://cloud.google.com/)
-![ffmpeg](https://img.shields.io/badge/ffmpeg-007808&?logo=ffmpeg&logoColor=white&style=for-the-badge)
-
+[![ffmpeg](https://img.shields.io/badge/ffmpeg-007808&?logo=ffmpeg&logoColor=white&style=for-the-badge)](https://www.ffmpeg.org/)
 ![Video Processing Pipeline](./assets/architecture.png)
 
 The architecture of the video processing pipeline is as follows:
