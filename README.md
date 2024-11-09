@@ -105,7 +105,19 @@ terraform apply -auto-approve
 ```
 If you face a problem with the EventArc API during the deployment, please check out the [known issues section](#known-issues).
 
-3. Deploy the Cloud Function to the provisioned infrastructure.
+If you face any issues with auth ie. 
+
+```bash 
+ google: could not find default credentials.
+```
+run this command
+```bash
+gcloud auth application-default login
+
+```
+For more information visit [Google set up ADC](https://cloud.google.com/docs/authentication/external/set-up-adc).
+
+1. Deploy the Cloud Function to the provisioned infrastructure.
 
 For the web apps setup, please refer to:
 

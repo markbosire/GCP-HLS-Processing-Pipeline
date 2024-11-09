@@ -1,5 +1,6 @@
 # iam.tf - Service Account and IAM roles
 data "google_storage_project_service_account" "gcs_account" {
+  project = var.project_id
 }
 resource "google_service_account" "function_sa" {
   account_id   = "cloud-function-sa"
