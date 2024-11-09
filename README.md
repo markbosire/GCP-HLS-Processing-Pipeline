@@ -140,7 +140,7 @@ If you face any API issues check if all the required APIs have been enabled. Che
 
 ## Clean Up
 
-Run the Terraform commands to clean up the infrastructure:
+Run this Terraform command to clean up the infrastructure:
 
 ```bash
 terraform destroy -auto-approve
