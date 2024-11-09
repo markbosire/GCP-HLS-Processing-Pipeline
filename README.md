@@ -123,3 +123,5 @@ If you recently started to use Eventarc, it may take a few minutes before all ne
 ```
 
 It happens because the Eventarc permissions take some time to propagate. Wait some minutes and do the terraform apply command again. Please see the [Known issues for Eventarc](https://cloud.google.com/eventarc/docs/issues).
+
+If you face any API issues check if all the required APIs have been enabled. Check the guide here: [API guide](./docs/apiguide.md)
